@@ -1,8 +1,15 @@
 import com.leapmotion.leap.*; 
-
+boolean cursorP = true;
 int maxCursorSize = 35;
 PShape cursor;
 color secondColor = color(255, 10, 10);
+//
+Vector tip;
+color paintColor;
+//float x = tip.getX() * width;
+//float y = height - tip.getY() * height;
+//float cursorSize = maxCursorSize - maxCursorSize * tip.getZ();
+
 Controller leap = new Controller();
 
 void setup() {
@@ -21,10 +28,11 @@ void draw() {
   //locate finger ("pointer")
   if (pointer.isValid()) {
     color frontColor = color(12, 135, 224);
-    
+
     InteractionBox iBox = frame.interactionBox();
     Vector tip = iBox.normalizePoint(pointer.tipPosition());
     fingerPaint(tip, frontColor);
+    cursorPaint(tip);
   }
 }
 
@@ -34,30 +42,38 @@ void fingerPaint(Vector tip, color paintColor) {
   float y = height - tip.getY() * height;
   float cursorSize = maxCursorSize - maxCursorSize * tip.getZ();
 
-  ellipse(x, y, cursorSize, cursorSize);
+  
 
-  println(tip.getZ());
- 
-   
-println(cursorSize);
- 
- if (tip.getZ() < 13) {
-   fill(255, 33, 124);
-    ellipse(x, y, 30, 30);
-   
+  //if (cursorSize < 13) {
+  // fill(255, 33, 124);
+  //ellipse(x, y, 30, 30);
+
+  if (cursorSize > 13) {
+    fill(12, 135, 224);
+    ellipse(x, y, cursorSize, cursorSize);
   }
- 
-  if (cursorSize == 0.0) {
-    //ellipse(x, y, cursorSize, cursorSize);
-    println("GONE");
-    saveFrame("/Users/jamesharris/Desktop/Draw/sketch_150624a/img/pic###.jpg");
-    background(255, 255, 255);
+}
+
+//println(tip.getZ());
+
+
+void cursorPaint(Vector tip) {
+  float x = tip.getX() * width;
+  float y = height - tip.getY() * height;
+  float cursorSize = maxCursorSize - maxCursorSize * tip.getZ();
+
+  if ((cursorSize < 13) && (cursorP)) {
+
+    fill(255, 33, 124);
+    ellipse(x, y, 15, 15);
+    //cursorP = false;
+    cursorPaint(tip);
   }
 }
 void keyPressed() {
 
   if (keyPressed == true) {
-     redraw();
+    redraw();
     //background(255, 255, 255);
   }
 }
