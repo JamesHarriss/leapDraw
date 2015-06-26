@@ -6,7 +6,7 @@ PShape cursor;
 color secondColor = color(255, 10, 10);
 //
 
-  
+
 Vector tip;
 color paintColor;
 //float x = tip.getX() * width;
@@ -26,7 +26,7 @@ void setup() {
 
 void draw() {
   //leap motion size
-//println( getStabilizedPosition);
+  //println( getStabilizedPosition);
   Frame frame = leap.frame();
   Pointable pointer = frame.pointables().frontmost();
   //locate finger ("pointer")
@@ -51,10 +51,10 @@ void fingerPaint(Vector tip, color paintColor) {
     fill(12, 135, 224);
     ellipse(x, y, cursorSize, cursorSize);
   }
-  
-   if (cursorSize < 13) {
+
+  if (cursorSize < 13) {
     fill(255, 135, 70);
-    //ellipse(tip.getX(), tip.getY(), 20, 20);
+    ellipse(x, y, 20, 20);
   }
 }
 
@@ -62,28 +62,32 @@ void fingerPaint(Vector tip, color paintColor) {
 
 
 /*void cursorPaint(Vector tip) {
-  float x = tip.getX() * width;
-  float y = height - tip.getY() * height;
-  float cursorSize = maxCursorSize - maxCursorSize * tip.getZ();
-
-  if ((cursorSize < 13) && (cursorP)) {
-
-    fill(255, 33, 124);
-    ellipse(x, y, 15, 15);
-    //cursorP = false;
-    
-  }
-}
-*/
-void keyPressed() {
+ float x = tip.getX() * width;
+ float y = height - tip.getY() * height;
+ float cursorSize = maxCursorSize - maxCursorSize * tip.getZ();
+ 
+ if ((cursorSize < 13) && (cursorP)) {
+ 
+ fill(255, 33, 124);
+ ellipse(x, y, 15, 15);
+ //cursorP = false;
+ 
+ }
+ }
+ */
+/*void keyPressed() {
 
   if (keyPressed == true) {
-    redraw();
-    String url = "http://192.168.8.50:3000/upload";
-    ImageToWeb img = new ImageToWeb(this);
-    img.save("jpg",true);
-    img.post("test",url,"jpg-test",true,img.getBytes(g));
+    background(255,255,255);
+       String url = "http://192.168.8.50:3000/upload";
+   ImageToWeb img = new ImageToWeb(this);
+   img.save("jpg", true);
+   img.post("IMG", url, "IMG", true, img.getBytes(g));
+    }
    
-  }
-}
+  }*/
+  
+  
+ 
+
 
