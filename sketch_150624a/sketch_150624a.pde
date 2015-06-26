@@ -23,6 +23,7 @@ void setup() {
 
 void draw() {
   //leap motion size
+  
   Frame frame = leap.frame();
   Pointable pointer = frame.pointables().frontmost();
   //locate finger ("pointer")
@@ -32,7 +33,7 @@ void draw() {
     InteractionBox iBox = frame.interactionBox();
     Vector tip = iBox.normalizePoint(pointer.tipPosition());
     fingerPaint(tip, frontColor);
-    cursorPaint(tip);
+    //cursorPaint(tip);
   }
 }
 
@@ -57,7 +58,7 @@ void fingerPaint(Vector tip, color paintColor) {
 //println(tip.getZ());
 
 
-void cursorPaint(Vector tip) {
+/*void cursorPaint(Vector tip) {
   float x = tip.getX() * width;
   float y = height - tip.getY() * height;
   float cursorSize = maxCursorSize - maxCursorSize * tip.getZ();
@@ -67,9 +68,10 @@ void cursorPaint(Vector tip) {
     fill(255, 33, 124);
     ellipse(x, y, 15, 15);
     //cursorP = false;
-    cursorPaint(tip);
+    
   }
 }
+*/
 void keyPressed() {
 
   if (keyPressed == true) {
