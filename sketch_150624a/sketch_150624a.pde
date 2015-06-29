@@ -6,6 +6,10 @@ PShape cursor;
 color secondColor = color(255, 10, 10);
 Controller leap = new Controller();
 
+//second frame 
+import javax.swing.*; 
+SecondApplet s;
+
 void setup() {
   frameRate(120);
   smooth();
@@ -13,9 +17,15 @@ void setup() {
   background(255, 255, 255);
   noStroke();
   cursor = createShape(ELLIPSE, 0, 0, 30, 30);
+  //// second frame
+  PFrame f = new PFrame(250, 250);
+  frame.setTitle("Sketch");
+  f.setTitle("Webcam");
+  fill(0);
 }
 
 void draw() {
+  
   Frame frame = leap.frame();
   Pointable pointer = frame.pointables().frontmost();
 
@@ -25,6 +35,11 @@ void draw() {
     Vector tip = iBox.normalizePoint(pointer.tipPosition());
     fingerPaint(tip, frontColor);
   }
+  
+  //second frame
+  background(255);
+  ellipse(mouseX, mouseY, 10, 10);
+  s.setGhostCursor(mouseX, mouseY);
 }
 
 void fingerPaint(Vector tip, color paintColor) {
@@ -33,12 +48,40 @@ void fingerPaint(Vector tip, color paintColor) {
   float y = height - tip.getY() * height;
   float cursorSize = maxCursorSize - maxCursorSize * tip.getZ();
 
-  if (cursorSize > 13) {
+  if (cursorSize > 14) {
     fill(12, 135, 224);
     ellipse(x, y, cursorSize, cursorSize);
-  } else if (cursorSize < 13) {
-    fill(255, 70, 70);
-    ellipse(x, y, 20, 20);
+  } else if (cursorSize < 14) {
+    fill(128, 128, 128);
+    ellipse(x, y, 3, 3);
+  }
+}
+public class PFrame extends JFrame {
+  public PFrame(int width, int height) {
+    setBounds(100, 100, width, height);
+    s = new SecondApplet();
+    add(s);
+    s.init();
+    show();
+  }
+}
+public class SecondApplet extends PApplet {
+  int ghostX, ghostY;
+  public void setup() {
+    background(0);
+    noStroke();
+  }
+
+  public void draw() {
+    background(50);
+    fill(255);
+    ellipse(mouseX, mouseY, 10, 10);
+    fill(0);
+    ellipse(ghostX, ghostY, 10, 10);
+  }
+  public void setGhostCursor(int ghostX, int ghostY) {
+    this.ghostX = ghostX;
+    this.ghostY = ghostY;
   }
 }
 
