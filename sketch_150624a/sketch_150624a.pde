@@ -58,11 +58,13 @@ void fingerPaint(Vector tip, color paintColor) {
   float x = tip.getX() * width;
   float y = height - tip.getY() * height;
   float cursorSize = maxCursorSize - maxCursorSize * tip.getZ();
+  rect(128, 128, 30, cursorSize);
 
   if (cursorSize > 14) {
     fill(12, 135, 224);
     ellipse(x, y, cursorSize, cursorSize);
   } else if (cursorSize < 14) {
+    
     fill(128, 128, 128);
     ellipse(x, y, 3, 3);
   }
@@ -105,6 +107,7 @@ public void keyPressed() {
     ImageToWeb img = new ImageToWeb(this);
     img.save("jpg", true);
     img.post("img", url, "img", true, img.getBytes(g));
+    draw();
    
   }
 }
