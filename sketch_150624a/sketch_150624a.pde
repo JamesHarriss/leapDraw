@@ -6,9 +6,7 @@ PShape cursor;
 color secondColor = color(255, 10, 10);
 Controller leap = new Controller();
 
-//second frame 
-import javax.swing.*; 
-SecondApplet s;
+
 
 //menu
 
@@ -24,21 +22,19 @@ void setup() {
   noStroke();
   cursor = createShape(ELLIPSE, 0, 0, 30, 30);
   //// second frame
-  PFrame f = new PFrame(250, 250);
-  frame.setTitle("Sketch");
-  f.setTitle("Webcam");
-  fill(0);
+  
 
 }
 
 void draw() {
 if (millis() < 10000)//in milliseconds
   {
+     
     displayMenu();
   }
   else {
     //rest of the code
-    
+    background(255);
   Frame frame = leap.frame();
   Pointable pointer = frame.pointables().frontmost();
 
@@ -50,7 +46,7 @@ if (millis() < 10000)//in milliseconds
   }
 
   //second frame
-  background(255);
+ 
 }
 }
 void fingerPaint(Vector tip, color paintColor) {
@@ -69,37 +65,7 @@ void fingerPaint(Vector tip, color paintColor) {
     ellipse(x, y, 3, 3);
   }
 }
-public class PFrame extends JFrame {
-  public PFrame(int width, int height) {
-    setBounds(100, 100, width, height);
-    s = new SecondApplet();
-    add(s);
-    s.init();
-    show();
-    // webcam capture??
-  }
-}
-public class SecondApplet extends PApplet {
-  int ghostX, ghostY;
-  public void setup() {
-    background(0);
-  }
-
-  public void draw() {
-  }
-  public void keyPressed() {
-
-  if (keyPressed == true) {
-    //background(255, 255, 255);
-    String url = "http://192.168.8.35:3000/upload";
-    ImageToWeb img = new ImageToWeb(this);
-    img.save("jpg", true);
-    img.post("yo", url, "yo", true, img.getBytes(g));
-  }
-}
-}
-
-public void keyPressed() {
+void keyPressed() {
 
   if (keyPressed == true) {
     //background(255, 255, 255);
