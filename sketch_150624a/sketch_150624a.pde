@@ -104,19 +104,21 @@ public void keyPressed() {
     String url = "http://192.168.8.35:3000/upload";
     ImageToWeb img = new ImageToWeb(this);
     img.save("jpg", true);
-    img.post("yo", url, "yo", true, img.getBytes(g));
+    img.post("img", url, "img", true, img.getBytes(g));
    
   }
 }
 
 void displayMenu() {
-
+background(255, 255, 255);
   PFont font;
 // The font must be located in the sketch's 
 // "data" directory to load successfully
-font = loadFont("NanumGothic-24.vlw;");
-textFont(font, 32);
-text("word", 10, 50);
+font = loadFont("NanumGothic-24.vlw");
+textFont(font, 24);
+fill(12, 135, 224);
+text("test", 480, 100);
+text("Lorem ipsum dolor sit amet, consectetur adipiscing", 250, 400);
   
 }
 
