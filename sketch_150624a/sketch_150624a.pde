@@ -6,9 +6,10 @@ PShape cursor;
 color secondColor = color(255, 10, 10);
 Controller leap = new Controller();
 
-
+PImage img;
 
 //menu
+PGraphics mask;
 
 
 static final int NUMMENUBUTTONS = 3;
@@ -22,49 +23,81 @@ void setup() {
   noStroke();
   cursor = createShape(ELLIPSE, 0, 0, 30, 30);
   //// second frame
-  
+ mask = createGraphics(width,height, P3D);
+
 
 }
 
 void draw() {
-if (millis() < 10000)//in milliseconds
+  if (millis() < 5000)//in milliseconds
   {
-     
+
     displayMenu();
-  }
-  else {
+  } else {
     //rest of the code
-    background(255);
-  Frame frame = leap.frame();
-  Pointable pointer = frame.pointables().frontmost();
 
-  if (pointer.isValid()) {
-    color frontColor = color(12, 135, 224);
-    InteractionBox iBox = frame.interactionBox();
-    Vector tip = iBox.normalizePoint(pointer.tipPosition());
-    fingerPaint(tip, frontColor);
+      //    rect(0,0, 1000, 1000);
+    Frame frame = leap.frame();
+    Pointable pointer = frame.pointables().frontmost();
+
+    if (pointer.isValid()) {
+      color frontColor = color(12, 135, 224);
+      InteractionBox iBox = frame.interactionBox();
+      Vector tip = iBox.normalizePoint(pointer.tipPosition());
+      fingerPaint(tip, frontColor);
+    }
+
+    //second frame
   }
-
-  //second frame
- 
-}
 }
 void fingerPaint(Vector tip, color paintColor) {
+
+  fill(paintColor);
+  float x = tip.getX() * width;
+  float y = height - tip.getY() * height;
+  float cursorSize = maxCursorSize - maxCursorSize * tip.getZ();
+  rect(128, 128, 30, tip.getZ()* 10);
+
+  if (cursorSize > 14) {
+    fill(12, 135, 224);
+    ellipse(x, y, cursorSize, cursorSize);
+  } else if (cursorSize < 14) {
+ 
+    background(255,0,0);
+  // draw the mask
+  mask.beginDraw();
+  mask.background(0);
+ 
+  mask.ellipse(x, y, cursorSize, cursorSize);
+  
+  img.blend(mask, 0,0,img.height, img.width, 0,0,img.width,img.height,MULTIPLY);
+  image(img,0,0,width,height);
+  mask.endDraw();
+ 
+ //blend(mask,0,0, width,height, 0,0,width,height,MULTIPLY);
+
+  // draw the masked image to the screen
+  
+  }
+}
+
+
+void cursorPaint(Vector tip, color paintColor) {
+  background(0);
   fill(paintColor);
   float x = tip.getX() * width;
   float y = height - tip.getY() * height;
   float cursorSize = maxCursorSize - maxCursorSize * tip.getZ();
   rect(128, 128, 30, cursorSize);
 
-  if (cursorSize > 14) {
+
+  if (cursorSize < 14) {
     fill(12, 135, 224);
     ellipse(x, y, cursorSize, cursorSize);
-  } else if (cursorSize < 14) {
-    
-    fill(128, 128, 128);
-    ellipse(x, y, 3, 3);
   }
 }
+
+
 void keyPressed() {
 
   if (keyPressed == true) {
@@ -74,22 +107,19 @@ void keyPressed() {
     img.save("jpg", true);
     img.post("img", url, "img", true, img.getBytes(g));
     draw();
-   
   }
 }
 
 void displayMenu() {
-background(255, 255, 255);
+  background(255, 255, 255);
   PFont font;
-// The font must be located in the sketch's 
-// "data" directory to load successfully
-font = loadFont("NanumGothic-24.vlw");
-textFont(font, 24);
-fill(12, 135, 224);
-text("test", 480, 100);
-text("Lorem ipsum dolor sit amet, consectetur adipiscing", 250, 400);
-  
+  // The font must be located in the sketch's 
+  // "data" directory to load successfully
+  font = loadFont("NanumGothic-24.vlw");
+  textFont(font, 24);
+  fill(12, 135, 224);
+  text("test", 480, 100);
+  text("Lorem ipsum dolor sit amet, consectetur adipiscing", 250, 400);
 }
-
 
 
