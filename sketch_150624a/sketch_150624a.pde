@@ -10,6 +10,12 @@ Controller leap = new Controller();
 import javax.swing.*; 
 SecondApplet s;
 
+//menu
+
+
+static final int NUMMENUBUTTONS = 3;
+boolean drawBoxes;
+
 void setup() {
   frameRate(120);
   smooth();
@@ -22,10 +28,17 @@ void setup() {
   frame.setTitle("Sketch");
   f.setTitle("Webcam");
   fill(0);
+
 }
 
 void draw() {
-  
+if (millis() < 10000)//in milliseconds
+  {
+    displayMenu();
+  }
+  else {
+    //rest of the code
+    
   Frame frame = leap.frame();
   Pointable pointer = frame.pointables().frontmost();
 
@@ -35,13 +48,11 @@ void draw() {
     Vector tip = iBox.normalizePoint(pointer.tipPosition());
     fingerPaint(tip, frontColor);
   }
-  
+
   //second frame
   background(255);
-  ellipse(mouseX, mouseY, 10, 10);
-  s.setGhostCursor(mouseX, mouseY);
 }
-
+}
 void fingerPaint(Vector tip, color paintColor) {
   fill(paintColor);
   float x = tip.getX() * width;
@@ -63,40 +74,51 @@ public class PFrame extends JFrame {
     add(s);
     s.init();
     show();
+    // webcam capture??
   }
 }
 public class SecondApplet extends PApplet {
   int ghostX, ghostY;
   public void setup() {
     background(0);
-    noStroke();
   }
 
   public void draw() {
-    background(50);
-    fill(255);
-    ellipse(mouseX, mouseY, 10, 10);
-    fill(0);
-    ellipse(ghostX, ghostY, 10, 10);
   }
-  public void setGhostCursor(int ghostX, int ghostY) {
-    this.ghostX = ghostX;
-    this.ghostY = ghostY;
+  public void keyPressed() {
+
+  if (keyPressed == true) {
+    //background(255, 255, 255);
+    String url = "http://192.168.8.35:3000/upload";
+    ImageToWeb img = new ImageToWeb(this);
+    img.save("jpg", true);
+    img.post("yo", url, "yo", true, img.getBytes(g));
+  }
+}
+}
+
+public void keyPressed() {
+
+  if (keyPressed == true) {
+    //background(255, 255, 255);
+    String url = "http://192.168.8.35:3000/upload";
+    ImageToWeb img = new ImageToWeb(this);
+    img.save("jpg", true);
+    img.post("yo", url, "yo", true, img.getBytes(g));
+   
   }
 }
 
-/*void keyPressed() {
- 
- if (keyPressed == true) {
- background(255,255,255);
- String url = "http://192.168.8.50:3000/upload";
- ImageToWeb img = new ImageToWeb(this);
- img.save("jpg", true);
- img.post("IMG", url, "IMG", true, img.getBytes(g));
- }
- 
- }*/
+void displayMenu() {
 
+  PFont font;
+// The font must be located in the sketch's 
+// "data" directory to load successfully
+font = loadFont("NanumGothic-24.vlw;");
+textFont(font, 32);
+text("word", 10, 50);
+  
+}
 
 
 
