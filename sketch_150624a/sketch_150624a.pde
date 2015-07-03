@@ -19,13 +19,16 @@ void setup() {
   time = millis();//store the current time
   myCursor = new Cursor(width/2, height/2, 0.00, 10, color(0, 0, 0));
 }
+
 void draw() {
+  
   if (millis() < 5000)
   {
     displayMenu();
   } else {
     Frame frame = leap.frame();
     Pointable pointer = frame.pointables().frontmost();
+   
     if (pointer.isValid()) {
       color frontColor = color(12, 135, 224);
       InteractionBox iBox = frame.interactionBox();
@@ -33,6 +36,7 @@ void draw() {
       myCursor.updateCursor(tip.getX(), tip.getY());
       background(255, 255, 255);
       println(tip.getZ());
+      
       for (int i = cursors.size ()-1; i>0; i--) {
         cursors.get(i).drawCursor();
       }
@@ -43,19 +47,24 @@ void draw() {
       }
     }
   }
+  
   if (millis() >= 60000) {
     draw();
   }
 }
+
 void keyPressed() {
   if (keyPressed == true) {
     String url = "http://192.168.8.35:3000/upload";
     ImageToWeb img = new ImageToWeb(this);
     img.save("jpg", true);
     img.post("img", url, "img", true, img.getBytes(g));
-    draw();
+    fill(255,255,255);
+    rect(0,0,1000,1000);
+    cursors.clear();
   }
 }
+
 void displayMenu() {
   background(255, 255, 255);
   font = loadFont("NanumGothic-24.vlw");
@@ -67,6 +76,7 @@ void displayMenu() {
     background(255, 255, 255);
   }
 }
+
 void timer() {
   font = loadFont("NanumGothic-24.vlw");
   textFont(font, 24);
@@ -74,6 +84,7 @@ void timer() {
   time = millis();
   text(time, 100, 100);
 }
+
 class Cursor {
   float x;
   float y;
@@ -88,10 +99,12 @@ class Cursor {
     r = radius;
     c = colour;
   }
+  
   void drawCursor() {
     fill(this.c);
     ellipse(this.x, this.y, this.r, this.r);
   }
+  
   void updateCursor(float newx, float newy) {
     this.x = newx * width;
     this.y = height - newy * height;
