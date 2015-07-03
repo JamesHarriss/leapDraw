@@ -5,12 +5,14 @@ int maxCursorSize = 35;
 PShape cursor;
 color secondColor = color(255, 10, 10);
 PFont font;
+int time;
 Controller leap = new Controller();
 Cursor myCursor;
 Typetester tester;
-ArrayList
 
-int time;
+
+ArrayList <Cursor> cursors = new ArrayList <Cursor>();
+
 
 void setup() {
   frameRate(120);
@@ -19,7 +21,7 @@ void setup() {
   noStroke();
   cursor = createShape(ELLIPSE, 0, 0, 30, 30);
   time = millis();//store the current time
-  myCursor = new Cursor(width/2, height/2, 0.00, 10.00, 10.00);
+  myCursor = new Cursor(width/2, height/2, 0.00, 10, color(0, 0, 0));
   tester = new Typetester();
 }
 
@@ -35,33 +37,26 @@ void draw() {
       color frontColor = color(12, 135, 224);
       InteractionBox iBox = frame.interactionBox();
       Vector tip = iBox.normalizePoint(pointer.tipPosition());
-      fingerPaint(tip, frontColor);
+      // fingerPaint(tip, frontColor);
       myCursor.updateCursor(tip.getX(), tip.getY());
-      background(255,255,255);
+      //
+      background(255, 255, 255);
+println(tip.getZ());
+      for (int i = cursors.size ()-1; i>0; i--) {
+        //cursors.get(i).drawCursor();
+        cursors.get(i).drawCursor();
+      }
+      if (tip.getZ() >= 0.70) {
+        
       myCursor.drawCursor();
+      } else if (tip.getZ() <= 0.70){
+        cursors.add(0, new Cursor(tip.getX() * width, height - tip.getY() * height, 0, 20, color(#1286FF)));
+      }
     }
   }
+
   if (millis() >= 60000) {
     draw();
-  }
-}
-void fingerPaint(Vector tip, color paintColor) {
-  fill(paintColor);
-  float x = tip.getX() * width;
-  float y = height - tip.getY() * height;
-  float cursorSize = maxCursorSize - maxCursorSize * tip.getZ();
-
-
-  if (cursorSize > 14) {
-    noStroke();
-    fill(12, 135, 224);
-    smooth(4);
-    ellipse(x, y, cursorSize, cursorSize);
-  } else if (cursorSize < 14) {
-    //background(255, 0,0);
-    fill(255, 255, 255);
-    //stroke(225);
-    ellipse(x, y, 20, 20);
   }
 }
 
@@ -96,46 +91,46 @@ void timer() {
 }
 
 class Cursor {
-  float xpos;
-  float ypos;
-  float zpos;
-  float w;
-  float h;
+  float x;
+  float y;
+  float z;
+  float r;
+  color c;
 
-  Cursor(float x, float y, float z, float Width, float Height) {
-    xpos = x;
-    ypos = y;
-    zpos = z;
-    w = Width;
-    h = Height;
+  Cursor(float xpos, float ypos, float zpos, float radius, color colour) {
+    x = xpos;
+    y = ypos;
+    z = zpos;
+    r = radius;
+    c = colour;
   }
 
   void drawCursor() {
-    fill(255, 0, 0);
-    ellipse(this.xpos, this.ypos, this.w, this.h);
+    fill(this.c);
+    ellipse(this.x, this.y, this.r, this.r);
   }
 
   void updateCursor(float newx, float newy) {
-    this.xpos = newx * width;
-    this.ypos = height - newy * height;
+    this.x = newx * width;
+    this.y = height - newy * height;
   }
 }
 
 class Typetester {
-    void printType(byte x) {
-        System.out.println(x + " is an byte");
-    }
-    void printType(int x) {
-        System.out.println(x + " is an int");
-    }
-    void printType(float x) {
-        System.out.println(x + " is an float");
-    }
-    void printType(double x) {
-        System.out.println(x + " is an double");
-    }
-    void printType(char x) {
-        System.out.println(x + " is an char");
-    }
+  void printType(byte x) {
+    System.out.println(x + " is an byte");
+  }
+  void printType(int x) {
+    System.out.println(x + " is an int");
+  }
+  void printType(float x) {
+    System.out.println(x + " is an float");
+  }
+  void printType(double x) {
+    System.out.println(x + " is an double");
+  }
+  void printType(char x) {
+    System.out.println(x + " is an char");
+  }
 }
 
