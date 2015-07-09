@@ -11,6 +11,8 @@ ArrayList <Cursor> cursors = new ArrayList <Cursor>();
 
 PImage photo;
 PImage screen1;
+PImage logo;
+PImage smallLogo;
 
 Cursor myCursor;
 import generativedesign.*;
@@ -30,13 +32,14 @@ void setup() {
   time = millis();//store the current time
   myCursor = new Cursor(width/2, height/2, 0.00, 10, color(0, 0, 0));
   photo = loadImage("point.png");
+   logo = loadImage("logo.png");
+   smallLogo = loadImage("smallLogo.png");
   screen1 = loadImage("screen.png");
   font = loadFont("LucidaConsole-28.vlw");
   font2 = loadFont("LucidaConsole-16.vlw");
 }
 
 void draw() {
-
   if (millis() < 10000)
   {
     displayMenu();
@@ -55,8 +58,8 @@ void draw() {
 
       for (int i = cursors.size ()-1; i>0; i--) {
         cursors.get(i).drawCursor();
-        textFont(font2, 16);
-        fill(#5DAA00);
+        smooth();
+image(smallLogo, 450, 30);
         image(screen1, 0, 790);
       }
       if (tip.getZ() >= 0.70) {
@@ -102,16 +105,11 @@ void keyPressed() {
 
 void displayMenu() {
   background(255, 255, 255);
-
   textFont(font, 28);
   fill(#5DAA00);
-  text("Motion Draw", 410, 100);
-  textFont(font, 28);
-  fill(#5DAA00);
-  text("Draw with your finger.", 320, 200);
-  text("Press C to clear and S to save", 260, 230);
-  text("Head to blahblah to see the libary of drawings", 220, 260);
-  //image(photo, 320, 460);
+  text("Draw with your finger.", 300, 570);
+  text("Press C to clear and S to save", 240, 620 );
+  image(logo, 360, 60);
 
   if (millis() > 9800) {
     background(255, 255, 255);
