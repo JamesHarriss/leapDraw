@@ -1,27 +1,20 @@
 import com.leapmotion.leap.*; 
 import org.seltar.Bytes2Web.*;
 boolean cursorP = true;
+boolean savePDF = false;
 int maxCursorSize = 35;
-PShape cursor;
+int time;
 color secondColor = color(255, 10, 10);
 PFont font;
 PFont font2;
-int time;
+PShape cursor;
 ArrayList <Cursor> cursors = new ArrayList <Cursor>();
-
 PImage photo;
 PImage screen1;
 PImage logo;
 PImage smallLogo;
-
-Cursor myCursor;
-import generativedesign.*;
-import processing.pdf.*;
-import java.util.Calendar;
-import com.leapmotion.leap.*;
-boolean savePDF = false;
 Controller leap = new Controller();
-
+Cursor myCursor;
 
 void setup() {
   frameRate(120);
@@ -29,14 +22,14 @@ void setup() {
   size(1000, 1000, P3D);
   noStroke();
   cursor = createShape(ELLIPSE, 0, 0, 30, 30);
-  time = millis();//store the current time
+  time = millis();
   myCursor = new Cursor(width/2, height/2, 0.00, 10, color(0, 0, 0));
   photo = loadImage("point.png");
-   logo = loadImage("logo.png");
-   smallLogo = loadImage("smallLogo.png");
+  logo = loadImage("logo.png");
+  smallLogo = loadImage("smallLogo.png");
   screen1 = loadImage("screen.png");
-  font = loadFont("LucidaConsole-28.vlw");
-  font2 = loadFont("LucidaConsole-16.vlw");
+  font = loadFont("Futura-Medium-28.vlw");
+  font2 = loadFont("Futura-Medium-16.vlw");
 }
 
 void draw() {
@@ -44,23 +37,20 @@ void draw() {
   {
     displayMenu();
   } else {
-
-
     Frame frame = leap.frame();
     Pointable pointer = frame.pointables().frontmost();
+
 
     if (pointer.isValid()) {
       color frontColor = color(12, 135, 224);
       InteractionBox iBox = frame.interactionBox(); 
       Vector tip = iBox.normalizePoint(pointer.tipPosition());
       myCursor.updateCursor(tip.getX(), tip.getY());
-      background(255, 255, 255);
+      background(#EDEDED);
+      ui();
 
       for (int i = cursors.size ()-1; i>0; i--) {
         cursors.get(i).drawCursor();
-        smooth();
-image(smallLogo, 450, 30);
-        image(screen1, 0, 790);
       }
       if (tip.getZ() >= 0.70) {
         myCursor.drawCursor();
@@ -70,24 +60,11 @@ image(smallLogo, 450, 30);
       }
     }
   }
-
   if (millis() >= 60000) {
     redraw();
   }
 }
-
 void keyPressed() {
-  /* if (keyPressed == true) {
-   String url = "http://192.168.8.35:3000/upload";
-   ImageToWeb img = new ImageToWeb(this);
-   img.save("jpg", true);
-   img.post("img", url, "img", true, img.getBytes(g));
-   fill(255, 255, 255);
-   rect(0, 0, 1000, 1000);
-   cursors.clear();
-   millis();
-   }
-   */
   if (key == 's' || key == 'S') {
     String url = "http://localhost:3000/upload";
     ImageToWeb img = new ImageToWeb(this);
@@ -102,22 +79,32 @@ void keyPressed() {
   }
 }
 
-
 void displayMenu() {
-  background(255, 255, 255);
+  background(#EDEDED);
   textFont(font, 28);
   fill(#5DAA00);
-  text("Draw with your finger.", 300, 570);
-  text("Press C to clear and S to save", 240, 620 );
-  image(logo, 360, 60);
+  text("Draw with your finger.", 370, 510);
+  text("Press C to clear and S to save", 320, 560 );
+  image(logo, 380, 160);
 
   if (millis() > 9800) {
-    background(255, 255, 255);
+    background(#EDEDED);
   }
 }
 
 
-
+void ui() {
+  smooth();
+  fill(#EDEDED);
+  ellipse(482, 62, 100, 100);
+  image(smallLogo, 450, 30);
+  textFont(font2, 16);
+  fill(#EDEDED);
+  ellipse(100, 800, 250, 90); //down up
+  fill(#5DAA00);
+  text("Draw with your finger.", 10, 790);
+  text("Press C to clear and S to save", 10, 810 );
+}
 class Cursor {
   float x;
   float y;
