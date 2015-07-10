@@ -16,6 +16,43 @@ PImage smallLogo;
 Controller leap = new Controller();
 Cursor myCursor;
 
+
+String generateName() {
+  String[] prefixes = {
+    "Agreeable", "Exa", "Benders", "Optima", "Cyber", "Galactic",
+    "General", "Oz", "Franklin", "Titan", "Super", "Union", "Nexus",
+    "Boomer", "Hacksaw", "Wall", "Monsters", "Bombach", "Burger",
+    "Fuzzy", "e", "O\'Niner", "Tricycle", "The Nerd", "Halibut",
+    "McQueen", "Hamilton", "McCoy", "Harold"
+  };
+  String[] middles = {
+    "Corp", " & Sons", "Mart", " World", " Banks", "-Mech",
+    "rax", "", "BigBucks", " Plumbing", " Brothers", "Greens",
+    " Town", " Place", "Donalds", " Consortium", " Firms",
+    " Burgers", " Commerce", " Aeronautics", " Technology",
+    " Innovations", " Labs", "Lightening", " Vendors", " Steel", " Oil",
+    " Publishing", " Manufacturing", " Designers", " Dairy", " Drilling"
+  };
+  String[] suffixes = {
+    "Agreeable", "Exa", "Benders", "Optima", "Cyber", "Galactic",
+    "General", "Oz", "Franklin", "Titan", "Super", "Union", "Nexus",
+    "Boomer", "Hacksaw", "Wall", "Monsters", "Bombach", "Burger",
+    "Fuzzy", "e", "O\'Niner", "Tricycle", "The Nerd", "Halibut",
+    "McQueen", "Hamilton", "McCoy", "Harold"
+  };
+  int pre = (int)random(0, prefixes.length);
+  int mid = (int)random(0, middles.length);
+  int suf = (int)random(0, suffixes.length);
+  return prefixes[pre] + middles[mid] + suffixes[suf];
+}
+ 
+PFont font1;
+boolean switchName = false;
+String currentName = generateName();
+
+
+
+
 void setup() {
   frameRate(120);
   smooth();
@@ -66,10 +103,19 @@ void draw() {
 }
 void keyPressed() {
   if (key == 's' || key == 'S') {
+    fill(#EDEDED);
+  ellipse(482, 62, 200, 200);
+  fill(#EDEDED);
+  ellipse(100, 800, 250, 90); //down up
+  fill(#5DAA00);
+   if (switchName) {
+    currentName = generateName();
+    switchName = false;
+  }
     String url = "http://localhost:3000/upload";
     ImageToWeb img = new ImageToWeb(this);
     img.save("jpg", true);
-    img.post("img", url, "img", true, img.getBytes(g));
+    img.post(currentName, url, currentName, true);
   }
   if (key == 'c' || key == 'C') {
     fill(255, 255, 255);
@@ -80,6 +126,7 @@ void keyPressed() {
 }
 
 void displayMenu() {
+
   background(#EDEDED);
   textFont(font, 28);
   fill(#5DAA00);
@@ -100,7 +147,7 @@ void ui() {
   image(smallLogo, 450, 30);
   textFont(font2, 16);
   fill(#EDEDED);
-  ellipse(100, 800, 250, 90); //down up
+  ellipse(100, 800, 250, 90);
   fill(#5DAA00);
   text("Draw with your finger.", 10, 790);
   text("Press C to clear and S to save", 10, 810 );
@@ -122,7 +169,6 @@ class Cursor {
 
   void drawCursor() {
     fill(this.c);
-
     ellipse(this.x, this.y, this.r, this.r);
   }
 
@@ -131,4 +177,6 @@ class Cursor {
     this.y = height - newy * height;
   }
 }
+
+
 
